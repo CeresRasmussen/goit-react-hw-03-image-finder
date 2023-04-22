@@ -45,7 +45,7 @@ export class App extends Component {
 
   render() {
     const { page, images } = this.state;
-    console.log('images:', images);
+    console.log('images:', page);
 
     return (
       <div className={css.App}>
