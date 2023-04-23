@@ -2,35 +2,43 @@ import React, { Component } from 'react';
 import { Searchbar } from 'components/Searchbar/Searchbar';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
+import { LoadMoreBtn } from 'components/Button/Button';
+import { Loader } from 'components/Loader/Loader';
 import css from 'components/App.module.css';
 import { fetchImages } from '../services/api';
 
 export class App extends Component {
   state = {
     images: [],
+    totalHits: null,
     query: '',
     page: 1,
+    // status: 'idle',
+    loading: false,
+
     // showModal: false,
   };
-
-  componentDidMount(e) {
-    console.log('componentDidMount');
-  }
 
   async componentDidUpdate(prevProps, prevState) {
     const { query, page } = this.state;
     console.log('componentDidUpdate');
-    console.log('prevState.query', prevState.query);
-    console.log('this.state.query', this.state.query);
-    if (prevState.query !== this.state.query) {
+    // this.setState({ status: 'pending' });
+    if (prevState.query !== query || prevState.page !== page) {
+      this.setState({ loading: true });
       const {
-        data: { hits },
+        data: { hits, totalHits },
       } = await fetchImages(query, page);
-      this.setState({
-        images: [...prevState.images, ...this.normalaziedImage(hits)],
-      });
+
+      hits.length
+        ? this.setState(prevState => ({
+            images: [...prevState.images, ...this.normalaziedImage(hits)],
+            totalHits,
+            loading: false, // status: 'resolved',
+          }))
+        : alert("Sorry, we couldn't find anything;( Try another query.");
     }
   }
+
   normalaziedImage(array) {
     return array.map(({ id, webformatURL, largeImageURL }) => ({
       id,
@@ -43,9 +51,15 @@ export class App extends Component {
     this.setState({ query, page: 1, images: [] });
   };
 
+  onLoadMore = () => {
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+    }));
+  };
+
   render() {
-    const { page, images } = this.state;
-    console.log('images:', page);
+    const { totalHits, images, loading, page } = this.state;
+    console.log('render:');
 
     return (
       <div className={css.App}>
@@ -53,6 +67,14 @@ export class App extends Component {
         <ImageGallery>
           <ImageGalleryItem images={images}></ImageGalleryItem>
         </ImageGallery>
+        {images.length !== 0 &&
+          (loading ? (
+            <Loader></Loader>
+          ) : (
+            page !== Math.ceil(totalHits / 12) && (
+              <LoadMoreBtn onLoadMore={this.onLoadMore}></LoadMoreBtn>
+            )
+          ))}
       </div>
     );
   }

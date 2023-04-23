@@ -1,2 +1,8 @@
-import React, { Component } from 'react';
-import css from 'components/Modal/Modal.module.css';
+import css from 'components/Button/Button.module.css';
+export const LoadMoreBtn = ({ onLoadMore }) => {
+  return (
+    <button className={css.Button} onClick={onLoadMore}>
+      Load More
+    </button>
+  );
+};
