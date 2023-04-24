@@ -1,6 +1,7 @@
 import css from 'components/ImageGalleryItem/ImageGalleryItem.module.css';
 // import { Modal } from 'components/Modal/Modal';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export class ImageGalleryItem extends Component {
   render() {
@@ -22,3 +23,14 @@ export class ImageGalleryItem extends Component {
     );
   }
 }
+ImageGalleryItem.propTypes = {
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      tags: PropTypes.string.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+    })
+  ),
+  takeDataImage: PropTypes.func.isRequired,
+};

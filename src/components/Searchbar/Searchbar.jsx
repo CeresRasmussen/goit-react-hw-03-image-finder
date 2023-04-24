@@ -3,6 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import React from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PropTypes from 'prop-types';
 
 const initialValue = { query: '' };
 
@@ -35,4 +36,8 @@ export const Searchbar = ({ onSubmitForm }) => {
       </Formik>
     </header>
   );
+};
+
+Searchbar.propTypes = {
+  onSubmitForm: PropTypes.func.isRequired,
 };
