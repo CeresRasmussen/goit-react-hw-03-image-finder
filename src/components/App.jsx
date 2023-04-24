@@ -24,20 +24,18 @@ export class App extends Component {
 
   // constructor(props) {
   //   super(props);
-  //   this.galleryRef = React.createRef();
+  // this.galleryRef = React.createRef();
   // }
 
   async componentDidUpdate(prevProps, prevState) {
     const { query, page } = this.state;
     // const galleryElement = this.galleryRef.current;
-    // if (page !== 1) {
-    //   if (galleryElement) {
-    //     window.scrollTo({
-    //       top: galleryElement.offsetHeight,
-    //       behavior: 'smooth',
-    //     });
-    //   }
-    // }
+    if (page !== 1) {
+      window.scrollBy({
+        top: 660,
+        behavior: 'smooth',
+      });
+    }
 
     if (prevState.query !== query || prevState.page !== page) {
       this.setState({ loading: true });
