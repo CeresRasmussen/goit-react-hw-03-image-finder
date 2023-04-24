@@ -22,22 +22,22 @@ export class App extends Component {
     largeURL: '',
   };
 
-  constructor(props) {
-    super(props);
-    this.galleryRef = React.createRef();
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.galleryRef = React.createRef();
+  // }
 
   async componentDidUpdate(prevProps, prevState) {
     const { query, page } = this.state;
-    const galleryElement = this.galleryRef.current;
-    if (page !== 1) {
-      if (galleryElement) {
-        window.scrollTo({
-          top: galleryElement.offsetTop + galleryElement.offsetHeight,
-          behavior: 'smooth',
-        });
-      }
-    }
+    // const galleryElement = this.galleryRef.current;
+    // if (page !== 1) {
+    //   if (galleryElement) {
+    //     window.scrollTo({
+    //       top: galleryElement.offsetHeight,
+    //       behavior: 'smooth',
+    //     });
+    //   }
+    // }
 
     if (prevState.query !== query || prevState.page !== page) {
       this.setState({ loading: true });
@@ -101,7 +101,10 @@ export class App extends Component {
     const showBtn =
       images.length !== 0 && page !== Math.ceil(totalHits / 12) && !loading;
     return (
-      <div className={css.App} ref={this.galleryRef}>
+      <div
+        className={css.App}
+        // ref={this.galleryRef}
+      >
         <Searchbar onSubmitForm={this.onSubmitForm}></Searchbar>
         <ImageGallery>
           <ImageGalleryItem

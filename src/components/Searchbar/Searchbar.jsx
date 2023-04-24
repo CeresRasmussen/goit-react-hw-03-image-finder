@@ -1,13 +1,15 @@
 import css from 'components/Searchbar/Searchbar.module.css';
 import { Formik, Form, Field } from 'formik';
 import React from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const initialValue = { query: '' };
 
 export const Searchbar = ({ onSubmitForm }) => {
   const onSubmit = ({ query }, { resetForm }) => {
     if (query === '') {
-      return alert('Enter a search query');
+      return toast.warn('Enter a search query');
     }
     onSubmitForm(query);
     resetForm();
