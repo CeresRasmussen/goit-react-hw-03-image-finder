@@ -7,6 +7,8 @@ import { Loader } from 'components/Loader/Loader';
 import { Modal } from 'components/Modal/Modal';
 import css from 'components/App.module.css';
 import { fetchImages } from '../services/api';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export class App extends Component {
   state = {
@@ -22,22 +24,23 @@ export class App extends Component {
 
   async componentDidUpdate(prevProps, prevState) {
     const { query, page } = this.state;
-    console.log('componentDidUpdate');
-    // this.setState({ status: 'pending' });
-    console.log(prevState.page, page);
+
     if (prevState.query !== query || prevState.page !== page) {
       this.setState({ loading: true });
       const {
         data: { hits, totalHits },
       } = await fetchImages(query, page);
-
+      if (page === Math.ceil(totalHits / 12)) {
+        toast.info('This is all we found');
+      }
       hits.length
         ? this.setState(prevState => ({
             images: [...prevState.images, ...this.normalaziedImage(hits)],
             totalHits,
-            loading: false, // status: 'resolved',
+            loading: false,
           }))
-        : alert("Sorry, we couldn't find anything;( Try another query.");
+        : toast.warn("Sorry, we couldn't find anything;( Try another query.");
+      this.setState({ loading: false });
     }
   }
 
@@ -81,7 +84,8 @@ export class App extends Component {
   render() {
     const { totalHits, images, loading, page, showModal, alt, largeURL } =
       this.state;
-    const showBtn = images.length !== 0 && page !== Math.ceil(totalHits / 12);
+    const showBtn =
+      images.length !== 0 && page !== Math.ceil(totalHits / 12) && !loading;
     return (
       <div className={css.App}>
         <Searchbar onSubmitForm={this.onSubmitForm}></Searchbar>
@@ -100,6 +104,18 @@ export class App extends Component {
             onClose={this.onShowModal}
           ></Modal>
         )}
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </div>
     );
   }
