@@ -65,7 +65,6 @@ export class App extends Component {
       alt,
       dataset: { large: largeURL },
     } = e.target;
-    console.log(alt, largeURL);
     this.setState(state => ({
       showModal: !state.showModal,
       largeURL,
@@ -73,7 +72,7 @@ export class App extends Component {
     }));
   };
 
-  onShowModal = e => {
+  onShowModal = () => {
     this.setState(state => ({
       showModal: !state.showModal,
     }));
@@ -83,7 +82,6 @@ export class App extends Component {
     const { totalHits, images, loading, page, showModal, alt, largeURL } =
       this.state;
     const showBtn = images.length !== 0 && page !== Math.ceil(totalHits / 12);
-    console.log('alt, largeURL', alt, largeURL);
     return (
       <div className={css.App}>
         <Searchbar onSubmitForm={this.onSubmitForm}></Searchbar>

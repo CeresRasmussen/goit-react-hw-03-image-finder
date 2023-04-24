@@ -16,25 +16,25 @@ export class Modal extends Component {
 
   onEscClick = e => {
     if (e.code === 'Escape') {
-      console.log('esc');
       this.props.onClose();
     }
   };
 
   onBackdropClick = e => {
     if (e.currentTarget !== e.target) {
-      console.log(e.target, e.currentTarget);
       this.props.onClose();
     }
   };
 
   render() {
     const { imageURL, tags } = this.props;
-    console.log('imageURL, tags:', imageURL, tags);
 
     return createPortal(
-      <div className={css.Overlay} onClick={this.onBackdropClick}>
-        <div className={css.Modal} onClick={this.props.onClose}>
+      <div
+        className={css.Overlay}
+        onClick={(this.onBackdropClick, this.props.onClose)}
+      >
+        <div className={css.Modal}>
           <img src={imageURL} alt={tags} />
         </div>
       </div>,
