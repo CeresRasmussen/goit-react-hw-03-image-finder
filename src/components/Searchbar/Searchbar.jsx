@@ -9,7 +9,7 @@ const initialValue = { query: '' };
 
 export const Searchbar = ({ onSubmitForm }) => {
   const onSubmit = ({ query }, { resetForm }) => {
-    if (query === '') {
+    if (query.trim() === '') {
       return toast.warn('Enter a search query');
     }
     onSubmitForm(query);
